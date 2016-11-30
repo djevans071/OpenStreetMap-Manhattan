@@ -37,13 +37,13 @@ def get_element(osm_file, tags=('node', 'way', 'relation')):
 
 
 
-print ET.tostring(get_specific_element(OSM_FILE, '265347580'), encoding = 'utf-8')
-print ET.tostring(get_specific_element(OSM_FILE, '278366155'), encoding = 'utf-8')
+print ET.tostring(get_specific_element(OSM_FILE, '265347583'), encoding = 'utf-8')
+# print ET.tostring(get_specific_element(OSM_FILE, '278366155'), encoding = 'utf-8')
 
-print ET.tostring(get_specific_element(OSM_FILE, '184578578'), encoding = 'utf-8')
-print ET.tostring(get_specific_element(OSM_FILE, '1950758029'), encoding = 'utf-8')
+# print ET.tostring(get_specific_element(OSM_FILE, '184578578'), encoding = 'utf-8')
+# print ET.tostring(get_specific_element(OSM_FILE, '1950758029'), encoding = 'utf-8')
 
-print ET.tostring(get_specific_element(OSM_FILE, '188201723'), encoding = 'utf-8')
+# print ET.tostring(get_specific_element(OSM_FILE, '188201723'), encoding = 'utf-8')
 
 # with open(SAMPLE_FILE, 'wb') as output:
     # output.write('<?xml version="1.0" encoding="UTF-8"?>\n')

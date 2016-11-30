@@ -202,16 +202,6 @@ def extract_sec_tags(sec_elem, attributes, tag_type):
             if update:
                 sec_dict[field] = update
 
-            # special case: postal code 83
-            if (sec_dict[field] == '83') and (sec_elem.attrib['k'] == 'addr:postcode'):
-                is_housenumber = sec_dict['key'] == 'addr:housenumber'
-                if is_housenumber and (sec_dict['value'] == '830'):
-                    sec_dict[field] = '10065'
-                    print '{} --> {}'.format('83', sec_dict[field])
-                elif is_housenumber and (sec_dict['value'] == '34'):
-                    sec_dict[field] = '10029'
-                    print '{} --> {}'.format('83', sec_dict[field])
-
         elif field == 'key':
             key = sec_elem.attrib['k']
             m = LOWER_COLON.search(key)
@@ -227,6 +217,8 @@ def extract_sec_tags(sec_elem, attributes, tag_type):
             else:
                 sec_dict['type'] = tag_type
                 sec_dict[field] = key
+
+
     return sec_dict
 
 def shape_element(element,
@@ -274,6 +266,16 @@ def shape_element(element,
             # handle secondary way tags
             sec_way_dict = extract_sec_tags(tag_elem, way_attribs, default_tag_type)
             tags.append(sec_way_dict)
+
+        # special case: update postal code '83' to correct poastal codes
+        id_zips = {'265347580':'10065', '278366155':'10029'}
+        for id_, zip_ in id_zips.items():
+            if way_attribs['id'] == id_:
+                for tag in tags:
+                    if tag['key'] == 'postcode':
+                        tag['value'] = zip_
+                        print '{} --> {}'.format('83', tag['value'])
+
         return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
 
 

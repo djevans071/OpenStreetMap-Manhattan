@@ -103,7 +103,7 @@ def update_name(name, mapping):
 
 def update_zip(zip_name):
     # returns consistent zip code values
-    try:    #try converting zip code to int value
+    try:    # try converting zip code to int value
         int(zip_name)
     except ValueError: # process zip code if it contains non-int values
         if '-' in zip_name:
@@ -111,7 +111,7 @@ def update_zip(zip_name):
         elif 'NY' in zip_name:
             betterzip = zip_name.split()[-1]
         return betterzip
-    else: #special cases
+    else: # special cases
         if zip_name == '100014':
             zip_name = '10014'
         elif zip_name == '320':
