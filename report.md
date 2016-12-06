@@ -118,7 +118,8 @@ Using the `get_specific_element` module in `sample.py`, I can pull up the XML en
 Both entries with zip code `320` have the same basic tags. I've only included the relevant subtags.
 
 ```xml
-<node changeset="13398343" id="1950758029" lat="40.8524674" lon="-73.9733050" timestamp="2012-10-07T13:55:53Z" uid="714008" user="ubuka0" version="1">
+<node changeset="13398343" id="1950758029" lat="40.8524674" lon="-73.9733050"
+ timestamp="2012-10-07T13:55:53Z" uid="714008" user="ubuka0" version="1">
     <tag k="addr:postcode" v="320" />
     <tag k="addr:street" v="Main Street" />
     <tag k="name" v="Fort Lee Public Library" />
@@ -134,14 +135,16 @@ Similarly, the zip code `97657` was mistyped. It is supposed to be `07657`.
 In this case, there are two different XML entries, each of which are `way` tags. Node subtags are suppressed.
 
 ```xml
-<way changeset="21017219" id="265347580" timestamp="2014-03-10T00:29:09Z" uid="1764427" user="lxbarth_nycbuildings" version="1">
+<way changeset="21017219" id="265347580" timestamp="2014-03-10T00:29:09Z"
+ uid="1764427" user="lxbarth_nycbuildings" version="1">
     <tag k="addr:housenumber" v="830" />
     <tag k="addr:postcode" v="83" />
     <tag k="addr:street" v="5th Avenue" />
     <tag k="building" v="office" />
 </way>
 
-<way changeset="41243585" id="278366155" timestamp="2016-08-04T17:57:24Z" uid="40023" user="ALE!" version="5">
+<way changeset="41243585" id="278366155" timestamp="2016-08-04T17:57:24Z"
+ uid="40023" user="ALE!" version="5">
     <tag k="addr:housenumber" v="34" />
     <tag k="addr:postcode" v="83" />
     <tag k="addr:street" v="Central Park North" />
