@@ -1,0 +1,7 @@
+Resources consulted
+
+- OpenStreetMap's Export Tool: 
+https://www.openstreetmap.org/export#map=12/40.7674/-73.9394)
+- How to convert a SQL query into a pandas dataframe: http://www.datacarpentry.org/python-ecology-lesson/08-working-with-sql
+- New York County zip code map: http://www.zipmap.net/New_York/New_York_County.htm
+- carlward's sample SQL OpenStreetMap project exploring Charlotte, NC: https://gist.github.com/carlward/54ec1c91b62a5f911c42#file-sample_project-md

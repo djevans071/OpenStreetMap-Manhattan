@@ -10,7 +10,7 @@ import pprint
 OSM_FILE = "manhattan_new-york.osm"  # Replace this with your osm file
 SAMPLE_FILE = "sample.osm"
 
-k = 1 # Parameter: take every k-th top level element
+k = 100 # Parameter: take every k-th top level element
 
 def get_specific_element(osm_file, id, tags=('node', 'way', 'relation')):
     # return element with a specific id and which has the right kind of tag
@@ -36,22 +36,19 @@ def get_element(osm_file, tags=('node', 'way', 'relation')):
             root.clear()
 
 
+def write_sample(samplefile):
+    with open(samplefile, 'wb') as output:
+        output.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+        output.write('<osm>\n  ')
 
-print ET.tostring(get_specific_element(OSM_FILE, '265347583'), encoding = 'utf-8')
-# print ET.tostring(get_specific_element(OSM_FILE, '278366155'), encoding = 'utf-8')
+        # Write every kth top level element
+        for i, element in enumerate(get_element(OSM_FILE)):
+            if i % k == 0:
+                output.write(ET.tostring(element, encoding='utf-8'))
 
-# print ET.tostring(get_specific_element(OSM_FILE, '184578578'), encoding = 'utf-8')
-# print ET.tostring(get_specific_element(OSM_FILE, '1950758029'), encoding = 'utf-8')
+        output.write('</osm>')
 
-# print ET.tostring(get_specific_element(OSM_FILE, '188201723'), encoding = 'utf-8')
+if __name__ == "__main__":
+    write_sample(SAMPLE_FILE)
 
-# with open(SAMPLE_FILE, 'wb') as output:
-    # output.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-    # output.write('<osm>\n  ')
-
-    # Write every kth top level element
-    # for i, element in enumerate(get_element(OSM_FILE)):
-        # if i % k == 0:
-            # output.write(ET.tostring(element, encoding='utf-8'))
-
-    # output.write('</osm>')
+    # print ET.tostring(get_specific_element(OSM_FILE, '265347583'), encoding = 'utf-8')

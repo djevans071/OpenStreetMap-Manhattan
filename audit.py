@@ -16,10 +16,10 @@ import pprint
 import pdb
 
 OSMFILE = "manhattan_new-york.osm"
-street_type_re = re.compile(r'\b\S+\.?$', re.IGNORECASE)
+type_re = re.compile(r'\b\S+\.?$', re.IGNORECASE)
 
 
-expected = ["Street", "Avenue", "Boulevard", "Drive",
+st_expected = ["Street", "Avenue", "Boulevard", "Drive",
             "Court", "Place", "Square", "Lane", "Road",
             "Trail", "Parkway", "Commons", "Terrace",
             'North', 'East', 'West', 'South', 'Plaza',
@@ -28,7 +28,7 @@ expected = ["Street", "Avenue", "Boulevard", "Drive",
             'Way', 'Alley', 'Bowery', 'A', 'B', 'C', 'D',
             'Extension', 'Oval', 'Park', 'Mews', 'Village' ]
 
-mapping = { "St": "Street", 'street': 'Street',
+st_mapping = { "St": "Street", 'street': 'Street',
             "St.": "Street", 'ST': 'Street',
             'st': 'Street', 'Steet': 'Street',
             'Street,': 'Street',
@@ -43,34 +43,40 @@ mapping = { "St": "Street", 'street': 'Street',
             'Macdougal': 'MacDougal Street',
             '41st': '41st Street', '42nd': '42nd Street'}
 
-def is_street_name(elem):
-    return (elem.attrib['k'] == "addr:street")
+def is_attrib(elem, key):
+    return (elem.attrib['k'] == key)
 
-def is_zip(elem):
-    return (elem.attrib['k'] == "addr:postcode")
+# def is_street_name(elem):
+#     return (elem.attrib['k'] == "addr:street")
 
-def audit_street_type(street_types, street_name):
+# def is_zip(elem):
+#     return (elem.attrib['k'] == "addr:postcode")
+
+def audit_type(types, name, expected, mapping):
     # first update street name before auditing to check for more
-    # anamolous street names
-    street_name = update_name(street_name, mapping)
-    m = street_type_re.search(street_name)
+    # anamolous street names (more generalized form to handle other attributes like city, etc.)
+    name = update_name(name, mapping)
+    m = type_re.search(name)
     if m:
-        street_type = m.group()
-        if street_type not in expected:
-            street_types[street_type].add(street_name)
+        type_ = m.group()
+        if type_ not in expected:
+            types[type_].add(name)
 
 
 def audit(osmfile, keyword):
     osm_file = open(osmfile, "rb")
     street_types = defaultdict(set)
     zip_types = set()
+    city_types = defaultdict(set)
     for event, elem in ET.iterparse(osm_file, events=("start",)):
 
         if elem.tag == "node" or elem.tag == "way":
             for tag in elem.iter("tag"):
-                if is_street_name(tag):
-                    audit_street_type(street_types, tag.attrib['v'])
-                if is_zip(tag):
+                # if is_street_name(tag):
+                if is_attrib(tag, 'addr:street'):
+                    audit_type(street_types, tag.attrib['v'], st_expected, st_mapping)
+                # if is_zip(tag):
+                if is_attrib(tag, 'addr:postcode'):
                     zipname = tag.attrib['v']
                     zipname = update_zip(tag.attrib['v'])
                     zip_types.add(zipname)
@@ -122,8 +128,8 @@ def update_zip(zip_name):
 
 
 if __name__ == '__main__':
-    # st_types = audit(OSMFILE, 'street')
-    # pprint.pprint(dict(st_types))
+    st_types = audit(OSMFILE, 'street')
+    pprint.pprint(dict(st_types))
 
-    zip_types = audit(OSMFILE, 'zip')
-    pprint.pprint(zip_types)
+    # zip_types = audit(OSMFILE, 'zip')
+    # pprint.pprint(zip_types)

@@ -174,7 +174,7 @@ WAY_NODES_FIELDS = ['id', 'node_id', 'position']
 from audit import update_name, update_zip, mapping
 
 def update_dict(elem):
-    # updates section dictionary for a given element if a zip code or street name needs to be changed
+    # updates secondary tags dictionary for a given element if a zip code or street name needs to be changed
     update_type = elem.attrib['k']
     if update_type == 'addr:postcode':
         new = update_zip(elem.attrib['v'])
@@ -191,10 +191,12 @@ def update_dict(elem):
         return False
 
 def extract_sec_tags(sec_elem, attributes, tag_type):
+    # for each secondary tag, create a dictionary with the elements of NODES_TAGS_FIELDS as keys
     sec_dict = {}
     for field in NODE_TAGS_FIELDS:
+        # loop over the node tag fields (id, key, value, type)
         if field == 'id':
-            sec_dict[field] = attributes[field]
+            sec_dict[field] = attributes[field] # attributes contains 'id', so just that value in our secondary tag dictionary
         elif field == 'value':
             sec_dict[field] = sec_elem.attrib['v']
             update = update_dict(sec_elem)
@@ -212,13 +214,11 @@ def extract_sec_tags(sec_elem, attributes, tag_type):
             elif n: # run though keys like 'cityracks.housenumber'
                 sec_dict['type'] = n.group(1)
                 sec_dict[field] = n.group(2)
-            elif PROBLEMCHARS.search(key):
+            elif PROBLEMCHARS.search(key): # skip this entry if a key contains problematic characters
                 continue
             else:
                 sec_dict['type'] = tag_type
                 sec_dict[field] = key
-
-
     return sec_dict
 
 def shape_element(element,
