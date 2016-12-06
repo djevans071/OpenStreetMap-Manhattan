@@ -267,7 +267,7 @@ def shape_element(element,
             sec_way_dict = extract_sec_tags(tag_elem, way_attribs, default_tag_type)
             tags.append(sec_way_dict)
 
-        # special case: update postal code '83' to correct poastal codes
+        # special case: update postal code '83' to correct postal codes
         id_zips = {'265347580':'10065', '278366155':'10029'}
         for id_, zip_ in id_zips.items():
             if way_attribs['id'] == id_:
