@@ -50,7 +50,7 @@ However, some street names are actually inputted as whole addresses like the fol
 'Uniti': set(['3rd Ave, New York, NY 10028, Stati Uniti'])
  ```
 
- There are three different ways these addresses are formatted. The address elements are comma separated, spaced separated with `New York` after the address, or space separated with `NYC` after the address. To extract the address only, we modify the `update_name` module as follows:
+ There are three different ways these addresses are formatted. The address elements are comma-separated, space-separated with `New York` after the address, or space-separated with `NYC` after the address. To extract the address only, we modify the `update_name` module as follows:
 
  ```python
     elif word_list[-1] == '10024':
@@ -292,7 +292,7 @@ WHERE a.key = 'postcode';
 
 #### Number of zip code tags by borough (including New Jersey)
 
-Here's breakdown of zip codes by borough that we will need to incorporate to make the appropriate groupings:
+Here's a breakdown of zip codes by borough that we will need to incorporate in order to make the appropriate groupings:
  * Manhattan: 100XX, 101XX, or 102XX
  * Brooklyn: 112XX
  * Bronx: 104XX and Riker's Island (11370). Bronx also includes parts of 10705, but that is not in our map area
@@ -362,7 +362,7 @@ I have edited the output to include a column of neighborhood names that approxim
 
 It is surprising that these are all locations in outer boroughs. These tend to be densely populated residential areas which are larger than the average Manhattan zip code zone. Also, since I included ways, many of the them may have originated in these residential neighborhoods.
 
-Restricting our view to node tags only reveal the following result:
+Restricting our view to node tags reveals the following result:
 ```
    value  neighborhood                             numTags
 0  11101  Long Island City, Queens                    1823
@@ -416,7 +416,7 @@ LIMIT 10;
 
 #### Bike racks
 
-It looks like bicycle parking is the most popular amenity in NYC, at least as far as the OSM data suggests. Most of the bicycle parking nodes are submitted by `cityracks`, so we're probably looking at public bike racks. Let us take a closer look at these racks. We use the `select` module in `query.py` to create a pandas dataframe from the output of the following SQL query:
+The OSM data suggests that bicycle parking is the most popular amenity in NYC by far. Most of the bicycle parking nodes are submitted by `cityracks`, so we're probably looking at public bike racks. Let us take a closer look at them. We use the `select` module in `query.py` to create a pandas dataframe from the output of the following SQL query:
 
 ```sql
 SELECT value
@@ -442,12 +442,12 @@ min       0.000000
 max      50.000000
 ```
 
-Most of the bicycle racks are small, with an average capacity between 3 and 4. The largest rack has 50 slots, and about 94% of racks have under 10 slots. Strangely, there are 2 racks with a capacity of 0.
+Most of the bicycle racks are small, with a mean capacity between 3 and 4. The largest rack has 50 slots, and about 94% of racks have under 10 slots. Strangely, there are 2 racks with a capacity of 0.
 
 ## Ideas for Improvement and Conclusion
 
-Just from the zip codes we can tell that the data for Manhattan is incomplete. Not all nodes have addresses, and not all addresses have postal codes, so one suggestion is for users to conform to a format for `addr` tag types where `street`, `state` (2 letter abbreviation from a drop-down menu), `city`, and `postcode` keys are all mandatory for US locations and where `passcode` must be a 5-digit number.  The use of `addr` will still be optional, but all its subkeys will be slaved to the mandatory format once `addr` is invoked. One way to implement a mandatory form is having an automated auditor like `audit.py` to scan through the submission and either correct inconsistent entries or throw an error message to the user. I agree with `carlward` that a means of cleaning user data at the source would help with maintaining the integrity data on OpenStreetMap.
+Just from the zip codes we can tell that the data for Manhattan is incomplete. Not all nodes have addresses and not all addresses have postal codes, so one suggestion is for users to conform to a format for `addr` tag types where `street`, `state` (2 letter abbreviation from a drop-down menu), `city`, and `postcode` keys are all mandatory for US locations and where `postcode` must be a 5-digit number.  The use of `addr` will still be optional, but all its subkeys will be slaved to the mandatory format once `addr` is invoked. One way to implement a mandatory form is having an automated auditor like `audit.py` to scan through the submission and either correct inconsistent entries or throw an error message to the user. I agree with `carlward` that a means of cleaning user data at the source would help with maintaining the integrity data on OpenStreetMap.
 
-However, there will still be room for user error to pass through this standardization system. It would be able to catch problematic zip codes like `83` or `100014` but not an erroneous zip code like `97657`. Perhaps a more sophisticated auditor which takes into account the state would work, but again, the user may accidentally choose the wrong state. Many entries are also automatically generated by GPS systems, so inconsistencies are bound to arise from users' efforts to input large quantities of data, especially if the users are city workers inputting the locations of New York's extensive public amenities.
+However, there will still be room for user error to pass through this standardization system. It would be able to catch problematic zip codes like `83` or `100014` but not an erroneous zip code like `97657`. Perhaps a more sophisticated auditor which takes states into account would work, but again, the user may accidentally choose the wrong state. Many entries are also automatically generated by GPS systems, so inconsistencies are bound to arise from users' efforts to input large quantities of data, especially if they are city workers inputting the locations of New York's extensive public amenities.
 
 I have only touched on one potential improvement among many that are still required for all of OpenStreetMap's data to be fully accurate, complete, valid, consistent, and uniform enough for effective data analysis. For the purposes of this exercise however, I believe the data has been well cleaned.
