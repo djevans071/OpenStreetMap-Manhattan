@@ -12,3 +12,5 @@ I extracted this data by using [OpenStreetMap's Export Tool](https://www.openstr
 ```
 
 then I saved the file as `manhattan_new-york.osm`. The limitations of a bounding box prevent me from selecting *only* Manhattan, so bits of the Bronx, Brooklyn, Queens, and New Jersey are going to be included. I will take note of this when I make some of my SQL queries.
+
+The full report can be found [here](https://github.com/djevans071/OpenStreetMap-Manhattan/blob/master/report.md).
